@@ -1,5 +1,4 @@
 export default function Navbar() {
-<<<<<<< HEAD
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/95 px-6 py-4 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between">
@@ -29,7 +28,4 @@ export default function Navbar() {
       </div>
     </header>
   );
-=======
-  return <nav>Navbar</nav>;
->>>>>>> 1f01884b5cacc2b4eff8919ea0f0a8f453dab8ee
 }
