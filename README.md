@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+# Damot Union
+
+Scaffolded project structure.
+>>>>>>> 1f01884b5cacc2b4eff8919ea0f0a8f453dab8ee
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

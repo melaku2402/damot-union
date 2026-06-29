@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Header from "../components/layout/Header";
 import Hero from "../components/home/Hero";
 import PartnerStrip from "../components/home/PartnerStrip";
@@ -25,3 +26,10 @@ export default function Home() {
     </>
   );
 }
+=======
+import React from "react";
+
+export default function Page() {
+  return <main>Home page placeholder</main>;
+}
+>>>>>>> 1f01884b5cacc2b4eff8919ea0f0a8f453dab8ee

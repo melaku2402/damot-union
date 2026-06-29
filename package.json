@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^7.8.0",
+<<<<<<< HEAD
     "axios": "^1.18.1",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.10.0",
@@ -22,6 +23,11 @@
     "react-dom": "19.2.4",
     "react-hook-form": "^7.80.0",
     "zod": "^4.4.3"
+=======
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+>>>>>>> 1f01884b5cacc2b4eff8919ea0f0a8f453dab8ee
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
