@@ -1,452 +1,416 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
+  Award,
+  BarChart3,
+  BookOpen,
+  Building2,
+  CalendarDays,
   ChevronDown,
-  ChevronRight,
+  CircleDot,
+  Factory,
+  GalleryHorizontal,
   Globe,
+  Handshake,
+  Home,
+  Landmark,
   Mail,
+  Map,
   MapPin,
   Menu,
+  Newspaper,
   Phone,
   Send,
+  ShieldCheck,
   Share2,
+  Sprout,
+  Target,
   Tractor,
-  Warehouse,
-  ScanSearch,
-  Factory,
   Truck,
-  Users,
   UserPlus,
+  Users,
+  Warehouse,
   X,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const nav = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About Us" },
-  { to: "/services", label: "Services" },
-  { to: "/projects", label: "Projects" },
-  { to: "/news", label: "News" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/contact", label: "Contact" },
-] as const;
+type MenuLink = {
+  href: string;
+  label: string;
+  icon?: LucideIcon;
+  description?: string;
+};
 
-const aboutLinks = [
-  { href: "/about#overview", label: "Overview" },
-  { href: "/about#history", label: "Our History" },
-  { href: "/about#vision", label: "Vision, Mission & Values" },
-  { href: "/about#objectives", label: "Objectives" },
-  { href: "/about#core-values", label: "Core Values" },
-] as const;
-
-const governanceLinks = [
-  { href: "/about#structure", label: "Organizational Structure" },
-  { href: "/about#board", label: "Board of Directors" },
-  { href: "/about#management", label: "Management Team" },
-  { href: "/about#network", label: "Cooperatives Network" },
-] as const;
-
-const impactLinks = [
-  { href: "/about#achievements", label: "Key Achievements" },
-  { href: "/about#reports", label: "Statistics & Reports" },
-  { href: "/about#partners", label: "Partners & Donors" },
-  { href: "/about#coverage", label: "Work Area Coverage" },
-] as const;
-
-const serviceLinks = [
-  { href: "/services#mechanization", label: "Mechanization Services" },
-  { href: "/services#input-supply", label: "Agricultural Input Supply" },
-  { href: "/services#grain-marketing", label: "Grain Marketing Services" },
-  { href: "/services#agro-processing", label: "Agro Processing Services" },
-  { href: "/services#transportation", label: "Transportation Services" },
-  { href: "/services#training", label: "Training & Capacity Building" },
+const aboutColumns = [
+  {
+    title: "About Damot Union",
+    links: [
+      { href: "/about#overview", label: "Overview", icon: Home },
+      { href: "/about#history", label: "Our History", icon: BookOpen },
+      { href: "/about#vision", label: "Vision, Mission & Values", icon: ShieldCheck },
+      { href: "/about#objectives", label: "Objectives", icon: Target },
+      { href: "/about#core-values", label: "Core Values", icon: CircleDot },
+    ],
+  },
+  {
+    title: "Governance",
+    links: [
+      { href: "/about#structure", label: "Organizational Structure", icon: Building2 },
+      { href: "/about#board", label: "Board of Directors", icon: Users },
+      { href: "/about#management", label: "Management Team", icon: Landmark },
+      { href: "/about#network", label: "Cooperatives Network", icon: Handshake },
+    ],
+  },
+  {
+    title: "Our Impact",
+    links: [
+      { href: "/about#achievements", label: "Key Achievements", icon: Award },
+      { href: "/about#reports", label: "Statistics & Reports", icon: BarChart3 },
+      { href: "/about#partners", label: "Partners & Donors", icon: Handshake },
+      { href: "/about#coverage", label: "Work Area Coverage", icon: Map },
+    ],
+  },
 ] as const;
 
 const serviceCards = [
   {
     href: "/services#mechanization",
-    icon: Tractor,
     title: "Mechanization Services",
-    description: "Modern machinery support for land preparation and farming.",
+    description: "Modern machinery services for land preparation and farming.",
+    icon: Tractor,
   },
   {
     href: "/services#input-supply",
-    icon: Warehouse,
     title: "Agricultural Input Supply",
     description: "Quality fertilizers, seeds, and agro-chemicals supply.",
+    icon: Sprout,
   },
   {
     href: "/services#grain-marketing",
-    icon: ScanSearch,
     title: "Grain Marketing Services",
     description: "Market linkage and fair price for farmers' produce.",
+    icon: Warehouse,
   },
   {
     href: "/services#agro-processing",
-    icon: Factory,
     title: "Agro Processing Services",
     description: "Value addition through milling, processing, and packaging.",
+    icon: Factory,
   },
   {
     href: "/services#transportation",
-    icon: Truck,
     title: "Transportation Services",
     description: "Safe and efficient transportation solutions.",
+    icon: Truck,
   },
   {
     href: "/services#training",
-    icon: Users,
     title: "Training & Capacity Building",
     description: "Building knowledge and skills for better productivity.",
+    icon: Users,
   },
 ] as const;
 
-const desktopPanels = [
-  {
-    label: "About Us",
-    items: [aboutLinks, governanceLinks, impactLinks],
-  },
-  {
-    label: "Services",
-    items: [serviceLinks],
-  },
-  {
-    label: "Projects",
-    items: [[
-      { href: "/projects", label: "Overview" },
-      { href: "/projects#current", label: "Current Projects" },
-      { href: "/projects#impact", label: "Impact & Results" },
-    ]],
-  },
-  {
-    label: "News",
-    items: [[
-      { href: "/news", label: "Latest News" },
-      { href: "/news#announcements", label: "Announcements" },
-      { href: "/news#events", label: "Events" },
-    ]],
-  },
+const projectLinks = [
+  { href: "/projects#current", label: "Current Projects", icon: Sprout },
+  { href: "/projects#completed", label: "Completed Projects", icon: ShieldCheck },
+  { href: "/projects#impact", label: "Impact & Results", icon: BarChart3 },
 ] as const;
+
+const newsLinks = [
+  { href: "/news#latest", label: "Latest News", icon: Newspaper },
+  { href: "/news#announcements", label: "Announcements", icon: Send },
+  { href: "/news#events", label: "Events", icon: CalendarDays },
+] as const;
+
+const simpleDropdowns = [
+  { label: "Projects", href: "/projects", links: projectLinks },
+  { label: "News", href: "/news", links: newsLinks },
+] as const;
+
+const serviceMobileLinks = serviceCards.map((service) => ({
+  href: service.href,
+  label: service.title,
+  icon: service.icon,
+}));
 
 const mobileGroups = [
-  { label: "About Us", items: [aboutLinks, governanceLinks, impactLinks] },
-  { label: "Services", items: [serviceLinks] },
+  { label: "About Us", href: "/about", icon: Building2, columns: aboutColumns },
   {
-    label: "Projects",
-    items: [[
-      { href: "/projects", label: "Overview" },
-      { href: "/projects#current", label: "Current Projects" },
-      { href: "/projects#impact", label: "Impact & Results" },
-    ]],
+    label: "Services",
+    href: "/services",
+    icon: Sprout,
+    columns: [{ title: "Services", links: serviceMobileLinks }],
   },
-  {
-    label: "News",
-    items: [[
-      { href: "/news", label: "Latest News" },
-      { href: "/news#announcements", label: "Announcements" },
-      { href: "/news#events", label: "Events" },
-    ]],
-  },
-  { label: "Gallery", items: [[{ href: "/gallery", label: "Gallery" }]] },
-  { label: "Contact Us", items: [[{ href: "/contact", label: "Contact" }]] },
+  { label: "Projects", href: "/projects", icon: Landmark, columns: [{ title: "Projects", links: projectLinks }] },
+  { label: "News", href: "/news", icon: Newspaper, columns: [{ title: "News", links: newsLinks }] },
+  { label: "Gallery", href: "/gallery", icon: GalleryHorizontal, columns: [{ title: "Gallery", links: [{ href: "/gallery", label: "Gallery" }] }] },
+  { label: "Contact Us", href: "/contact", icon: Mail, columns: [{ title: "Contact", links: [{ href: "/contact", label: "Contact" }] }] },
 ] as const;
 
-function isActivePath(pathname: string, to: string) {
-  if (to === "/") {
-    return pathname === "/";
-  }
+function isActivePath(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
-  return pathname === to || pathname.startsWith(`${to}/`);
+function MenuItem({ item, onClick }: { item: MenuLink; onClick?: () => void }) {
+  const Icon = item.icon;
+
+  return (
+    <Link
+      href={item.href}
+      onClick={onClick}
+      className="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-emerald-50 hover:text-emerald-900"
+    >
+      {Icon ? <Icon className="size-4 shrink-0 text-emerald-700 transition group-hover:text-emerald-900" /> : null}
+      {item.label}
+    </Link>
+  );
 }
 
 export default function SiteHeader() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileSection, setMobileSection] = useState<string | null>(null);
-  const [desktopSection, setDesktopSection] = useState<string | null>(null);
+  const [mobileSection, setMobileSection] = useState("About Us");
 
-  const closeMobile = () => {
-    setMobileOpen(false);
-    setMobileSection(null);
-  };
+  const closeMobile = () => setMobileOpen(false);
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="border-b border-emerald-900/60 bg-emerald-950 text-[11px] text-white/90">
+      <div className="bg-[#073f1d] text-[11px] font-medium text-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <span className="flex items-center gap-1.5">
-              <Phone className="size-3.5 text-amber-300" /> +251 58 220 2666
+              <Phone className="size-3.5" /> +251 115 58 12 97
             </span>
             <span className="hidden items-center gap-1.5 sm:flex">
-              <Mail className="size-3.5 text-amber-300" /> info@damotunion.com.et
+              <Mail className="size-3.5" /> info@damotunion.et
             </span>
             <span className="hidden items-center gap-1.5 md:flex">
-              <MapPin className="size-3.5 text-amber-300" /> Bure Town, Amhara Region, Ethiopia
+              <MapPin className="size-3.5" /> Bure Town, Amhara Region, Ethiopia
             </span>
           </div>
-
-          <div className="flex items-center gap-3 text-white/90">
-            <span className="hidden sm:inline">Follow Us:</span>
-            <a href="#" aria-label="Facebook" className="transition hover:text-amber-300">
-              <Share2 className="size-4" />
-            </a>
-            <a href="#" aria-label="Website" className="transition hover:text-amber-300">
-              <Globe className="size-4" />
-            </a>
-            <a href="#" aria-label="Telegram" className="transition hover:text-amber-300">
-              <Send className="size-4" />
-            </a>
+          <div className="hidden items-center gap-3 md:flex">
+            <span>Follow Us:</span>
+            {[Share2, Globe, Send].map((Icon, index) => (
+              <a key={index} href="#" aria-label="Social link" className="transition hover:text-amber-300">
+                <Icon className="size-3.5" />
+              </a>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="border-b border-emerald-100 bg-white/95 shadow-sm backdrop-blur">
+      <div className="border-b border-zinc-200 bg-white shadow-sm">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="flex size-12 items-center justify-center rounded-full border-4 border-emerald-100 bg-emerald-950 text-sm font-bold text-white shadow-sm">
+          <Link href="/" className="flex min-w-0 items-center gap-3">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-full border-4 border-emerald-100 bg-[#0b5428] text-sm font-bold text-white">
               DU
             </div>
-            <div className="leading-tight">
-              <div className="text-lg font-bold tracking-wide text-emerald-950">DAMOT UNION</div>
-              <div className="text-[11px] text-emerald-700/80">
-                Farmers Cooperatives Union
-              </div>
+            <div className="min-w-0 leading-tight">
+              <div className="truncate text-lg font-extrabold tracking-wide text-[#0b5428]">DAMOT UNION</div>
+              <div className="truncate text-[11px] font-medium text-zinc-600">Farmers Cooperatives Union</div>
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-1 xl:flex">
+          <nav className="hidden items-center gap-1 lg:flex">
             <Link
               href="/"
-              className={`relative px-3 py-2 text-sm font-medium uppercase tracking-wide transition-colors ${
-                isActivePath(pathname, "/") ? "text-emerald-900" : "text-zinc-800 hover:text-emerald-700"
+              className={`relative px-4 py-7 text-xs font-bold uppercase tracking-wide transition ${
+                isActivePath(pathname, "/") ? "text-[#0b5428]" : "text-zinc-800 hover:text-[#0b5428]"
               }`}
             >
               Home
-              {isActivePath(pathname, "/") ? (
-                <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-emerald-700" />
-              ) : null}
+              {isActivePath(pathname, "/") ? <span className="absolute inset-x-4 bottom-4 h-0.5 rounded-full bg-[#0b5428]" /> : null}
             </Link>
 
-            {desktopPanels.map((panel) => {
-              const href = panel.label === "About Us" ? "/about" : panel.label === "Services" ? "/services" : panel.label === "Projects" ? "/projects" : "/news";
-              const open = desktopSection === panel.label;
-              const active = isActivePath(pathname, href);
-
-              return (
-                <div
-                  key={panel.label}
-                  className="relative"
-                  onMouseEnter={() => setDesktopSection(panel.label)}
-                  onMouseLeave={() => setDesktopSection(null)}
-                >
-                  <Link
-                    href={href}
-                    className={`relative inline-flex items-center gap-1 px-3 py-2 text-sm font-medium uppercase tracking-wide transition-colors ${
-                      active ? "text-emerald-900" : "text-zinc-800 hover:text-emerald-700"
-                    }`}
-                    aria-expanded={open}
-                  >
-                    {panel.label}
-                    <ChevronDown className="size-4" />
-                    {active ? (
-                      <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-emerald-700" />
-                    ) : null}
-                  </Link>
-
-                  {open ? (
-                    <div className="absolute left-1/2 top-full z-50 mt-4 w-[860px] -translate-x-1/2 rounded-2xl border border-emerald-100 bg-white p-5 shadow-[0_22px_60px_rgba(0,0,0,0.14)]">
-                      {panel.label === "Services" ? (
-                        <div className="grid grid-cols-1 gap-0 overflow-hidden rounded-xl border border-zinc-200 bg-white md:grid-cols-3 xl:grid-cols-6">
-                          {serviceCards.map((card) => {
-                            const Icon = card.icon;
-
-                            return (
-                              <Link
-                                key={card.href}
-                                href={card.href}
-                                className="group flex h-full min-h-[240px] flex-col border-b border-zinc-200 p-5 transition hover:bg-emerald-50 md:border-b-0 md:border-r md:last:border-r-0"
-                              >
-                                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800 transition group-hover:bg-emerald-700 group-hover:text-white">
-                                  <Icon className="size-7" />
-                                </div>
-                                <div className="text-sm font-semibold uppercase leading-snug tracking-wide text-zinc-900">
-                                  {card.title}
-                                </div>
-                                <p className="mt-3 text-sm leading-relaxed text-zinc-600">
-                                  {card.description}
-                                </p>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-4 gap-5">
-                          <div className="rounded-2xl bg-emerald-950 p-4 text-white">
-                            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">
-                              {panel.label}
-                            </div>
-                            <div className="mt-3 text-2xl font-semibold leading-tight">
-                              Explore {panel.label.toLowerCase()}.
-                            </div>
-                            <div className="mt-4 h-40 rounded-xl bg-[linear-gradient(135deg,rgba(255,255,255,0.14),rgba(255,255,255,0.02))]" />
-                          </div>
-
-                          {panel.items.map((group, groupIndex) => (
-                            <div key={groupIndex} className="space-y-2">
-                              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-950">
-                                {groupIndex === 0 ? "Quick Links" : groupIndex === 1 ? "Governance" : "Our Impact"}
-                              </div>
-                              <div className="space-y-1">
-                                {group.map((item) => (
-                                  <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-zinc-700 transition hover:bg-emerald-50 hover:text-emerald-900"
-                                  >
-                                    <ChevronRight className="size-3.5 text-emerald-700" />
-                                    {item.label}
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-
-                          <div className="space-y-3">
-                            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-950">
-                              Contact
-                            </div>
-                            <div className="rounded-2xl bg-emerald-50 p-4 text-sm text-zinc-700">
-                              <p className="font-semibold text-emerald-950">DAMOT UNION</p>
-                              <p className="mt-2">Bure Town, Amhara Region</p>
-                              <p className="mt-1">info@damotunion.com.et</p>
-                              <p className="mt-1">+251 58 220 2666</p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+            <div className="group relative">
+              <Link
+                href="/about"
+                className={`relative flex items-center gap-1 px-4 py-7 text-xs font-bold uppercase tracking-wide transition ${
+                  isActivePath(pathname, "/about") ? "text-[#0b5428]" : "text-zinc-800 hover:text-[#0b5428]"
+                }`}
+              >
+                About Us <ChevronDown className="size-3.5" />
+                {isActivePath(pathname, "/about") ? <span className="absolute inset-x-4 bottom-4 h-0.5 rounded-full bg-[#0b5428]" /> : null}
+              </Link>
+              <div className="invisible absolute left-1/2 top-full w-[690px] -translate-x-1/2 translate-y-3 rounded-md border border-zinc-200 bg-white p-5 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="grid grid-cols-[1fr_1fr_1fr_200px] overflow-hidden rounded-md">
+                  {aboutColumns.map((column) => (
+                    <div key={column.title} className="border-r border-zinc-200 px-4 last:border-r-0">
+                      <h3 className="mb-4 text-xs font-extrabold uppercase tracking-wide text-[#0b5428]">{column.title}</h3>
+                      <div className="space-y-1">
+                        {column.links.map((item) => (
+                          <MenuItem key={item.href} item={item} />
+                        ))}
+                      </div>
                     </div>
-                  ) : null}
+                  ))}
+                  <Link href="/about#achievements" className="ml-4 overflow-hidden rounded-md bg-[#0b5428] text-white">
+                    <div className="h-28 bg-emerald-800/60" />
+                    <div className="p-4">
+                      <div className="text-lg font-bold">25+ Years</div>
+                      <p className="mt-1 text-xs leading-relaxed text-white/80">
+                        Empowering farmers and building sustainable communities.
+                      </p>
+                    </div>
+                  </Link>
                 </div>
-              );
-            })}
+              </div>
+            </div>
 
-            <Link
-              href="/contact"
-              className={`relative px-3 py-2 text-sm font-medium uppercase tracking-wide transition-colors ${
-                isActivePath(pathname, "/contact") ? "text-emerald-900" : "text-zinc-800 hover:text-emerald-700"
-              }`}
-            >
+            <div className="group relative">
+              <Link
+                href="/services"
+                className={`relative flex items-center gap-1 px-4 py-7 text-xs font-bold uppercase tracking-wide transition ${
+                  isActivePath(pathname, "/services") ? "text-[#0b5428]" : "text-zinc-800 hover:text-[#0b5428]"
+                }`}
+              >
+                Services <ChevronDown className="size-3.5" />
+                {isActivePath(pathname, "/services") ? <span className="absolute inset-x-4 bottom-4 h-0.5 rounded-full bg-[#0b5428]" /> : null}
+              </Link>
+              <div className="invisible absolute left-1/2 top-full w-[900px] -translate-x-1/2 translate-y-3 rounded-md border border-zinc-200 bg-white p-0 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="grid grid-cols-6 overflow-hidden rounded-md">
+                  {serviceCards.map((card) => {
+                    const Icon = card.icon;
+
+                    return (
+                      <Link
+                        key={card.href}
+                        href={card.href}
+                        className="group/card flex min-h-[190px] flex-col items-center border-r border-zinc-200 p-5 text-center transition last:border-r-0 hover:bg-emerald-50"
+                      >
+                        <Icon className="mb-4 size-10 text-[#0b5428] transition group-hover/card:scale-110" />
+                        <h3 className="text-xs font-extrabold uppercase leading-snug text-zinc-900">{card.title}</h3>
+                        <p className="mt-3 text-xs leading-relaxed text-zinc-600">{card.description}</p>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {simpleDropdowns.map((dropdown) => (
+              <div key={dropdown.href} className="group relative">
+                <Link
+                  href={dropdown.href}
+                  className={`relative flex items-center gap-1 px-4 py-7 text-xs font-bold uppercase tracking-wide transition ${
+                    isActivePath(pathname, dropdown.href) ? "text-[#0b5428]" : "text-zinc-800 hover:text-[#0b5428]"
+                  }`}
+                >
+                  {dropdown.label} <ChevronDown className="size-3.5" />
+                  {isActivePath(pathname, dropdown.href) ? <span className="absolute inset-x-4 bottom-4 h-0.5 rounded-full bg-[#0b5428]" /> : null}
+                </Link>
+                <div className="invisible absolute left-0 top-full w-64 translate-y-3 rounded-md border border-zinc-200 bg-white p-3 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                  {dropdown.links.map((item) => (
+                    <MenuItem key={item.href} item={item} />
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <Link href="/gallery" className="px-4 py-7 text-xs font-bold uppercase tracking-wide text-zinc-800 transition hover:text-[#0b5428]">
+              Gallery
+            </Link>
+            <Link href="/contact" className="px-4 py-7 text-xs font-bold uppercase tracking-wide text-zinc-800 transition hover:text-[#0b5428]">
               Contact Us
-              {isActivePath(pathname, "/contact") ? (
-                <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-emerald-700" />
-              ) : null}
             </Link>
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link
-              href="/members"
-              className="hidden items-center gap-2 rounded-md bg-amber-400 px-4 py-2.5 text-sm font-semibold text-emerald-950 shadow-sm transition hover:brightness-105 md:inline-flex"
-            >
+            <Link href="/contact" className="hidden items-center gap-2 rounded-md bg-[#0b5428] px-5 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-[#073f1d] md:inline-flex">
               <UserPlus className="size-4" /> Join Us
             </Link>
             <button
               type="button"
-              onClick={() => setMobileOpen((value) => !value)}
-              className="rounded-md border border-emerald-900/15 p-2 text-emerald-950 xl:hidden"
-              aria-label="Menu"
-              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen(true)}
+              className="rounded-md border border-zinc-200 p-2 text-[#0b5428] lg:hidden"
+              aria-label="Open menu"
             >
-              {mobileOpen ? <X /> : <Menu />}
+              <Menu className="size-6" />
             </button>
           </div>
         </div>
-
-        {mobileOpen ? (
-          <nav className="border-t border-emerald-100 bg-emerald-950 text-white xl:hidden">
-            <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-              <div className="space-y-1">
-                {nav.map((item) => {
-                  const active = isActivePath(pathname, item.to);
-
-                  if (item.to === "/about" || item.to === "/services" || item.to === "/projects" || item.to === "/news") {
-                    const section = item.label;
-                    const sectionOpen = mobileSection === section;
-                    const group = mobileGroups.find((entry) => entry.label === section);
-
-                    return (
-                      <div key={item.to} className="rounded-xl border border-white/10 bg-white/5 px-3">
-                        <button
-                          type="button"
-                          onClick={() => setMobileSection((value) => (value === section ? null : section))}
-                          className="flex w-full items-center justify-between py-3 text-left text-sm font-semibold uppercase tracking-wide"
-                          aria-expanded={sectionOpen}
-                        >
-                          {item.label}
-                          <ChevronDown className={`size-4 transition ${sectionOpen ? "rotate-180" : ""}`} />
-                        </button>
-
-                        {sectionOpen && group ? (
-                          <div className="space-y-4 pb-4 pl-1 text-sm text-white/80">
-                            {group.items.map((subgroup, subgroupIndex) => (
-                              <div key={subgroupIndex} className="space-y-2">
-                                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-                                  {subgroupIndex === 0 ? "Overview" : subgroupIndex === 1 ? "Governance" : subgroupIndex === 2 ? "Impact" : "More"}
-                                </div>
-                                <div className="space-y-1.5">
-                                  {subgroup.map((link) => (
-                                    <Link
-                                      key={link.href}
-                                      href={link.href}
-                                      onClick={closeMobile}
-                                      className="block rounded-lg px-2 py-1.5 transition hover:bg-white/10 hover:text-amber-300"
-                                    >
-                                      {link.label}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : null}
-                      </div>
-                    );
-                  }
-
-                  if (item.to === "/gallery" || item.to === "/contact") {
-                    return (
-                      <Link
-                        key={item.to}
-                        href={item.to}
-                        onClick={closeMobile}
-                        className={`flex items-center justify-between rounded-lg px-3 py-3 text-sm font-semibold uppercase tracking-wide transition ${
-                          active ? "bg-emerald-900 text-amber-300" : "text-white/90 hover:bg-white/10"
-                        }`}
-                      >
-                        {item.label}
-                        <ChevronRight className="size-4 text-amber-300" />
-                      </Link>
-                    );
-                  }
-
-                  return null;
-                })}
-              </div>
-
-              <Link
-                href="/members"
-                onClick={closeMobile}
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-4 py-3 text-sm font-semibold text-emerald-950"
-              >
-                <UserPlus className="size-4" /> Join Us
-              </Link>
-            </div>
-          </nav>
-        ) : null}
       </div>
+
+      {mobileOpen ? (
+        <div className="fixed inset-0 z-50 bg-black/40 lg:hidden" onClick={closeMobile}>
+          <nav
+            className="ml-auto flex h-full w-[min(86vw,360px)] flex-col bg-[#073f1d] p-4 text-white shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-5">
+              <Link href="/" onClick={closeMobile} className="flex items-center gap-3">
+                <div className="flex size-11 items-center justify-center rounded-full bg-amber-300 text-xs font-extrabold text-[#073f1d]">DU</div>
+                <div>
+                  <div className="font-extrabold">DAMOT UNION</div>
+                  <div className="text-xs text-white/70">Farmers Cooperatives Union</div>
+                </div>
+              </Link>
+              <button type="button" onClick={closeMobile} aria-label="Close menu" className="p-1">
+                <X className="size-7" />
+              </button>
+            </div>
+
+            <div className="mt-4 flex-1 overflow-y-auto">
+              <Link href="/" onClick={closeMobile} className="mb-2 flex items-center gap-3 rounded-md px-3 py-3 text-sm font-bold uppercase hover:bg-white/10">
+                <Home className="size-4" /> Home
+              </Link>
+
+              {mobileGroups.map((group) => {
+                const Icon = group.icon;
+                const open = mobileSection === group.label;
+
+                return (
+                  <div key={group.label} className="border-b border-white/10 py-1">
+                    <button
+                      type="button"
+                      onClick={() => setMobileSection(open ? "" : group.label)}
+                      className={`flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm font-bold uppercase transition ${
+                        open ? "bg-emerald-700" : "hover:bg-white/10"
+                      }`}
+                    >
+                      <span className="flex items-center gap-3">
+                        <Icon className="size-4" /> {group.label}
+                      </span>
+                      <ChevronDown className={`size-4 transition ${open ? "rotate-180" : ""}`} />
+                    </button>
+
+                    {open ? (
+                      <div className="space-y-4 px-6 pb-4 pt-2">
+                        {group.columns.map((column) => (
+                          <div key={column.title}>
+                            <div className="mb-2 text-xs font-bold uppercase tracking-wide text-amber-300">{column.title}</div>
+                            <div className="space-y-1">
+                              {column.links.map((item) => (
+                                <Link
+                                  key={item.href}
+                                  href={item.href}
+                                  onClick={closeMobile}
+                                  className="block rounded-md px-2 py-1.5 text-sm text-white/85 hover:bg-white/10 hover:text-amber-300"
+                                >
+                                  {item.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+
+            <Link href="/contact" onClick={closeMobile} className="mt-4 flex items-center justify-center gap-2 rounded-md bg-amber-300 px-5 py-3 text-sm font-extrabold uppercase text-[#073f1d]">
+              <UserPlus className="size-4" /> Join Us
+            </Link>
+          </nav>
+        </div>
+      ) : null}
     </header>
   );
 }

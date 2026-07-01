@@ -1,18 +1,49 @@
+import Image from "next/image";
+
 export default function PartnerStrip() {
   const partners = [
-    "Cooperatives",
-    "Local Markets",
-    "Agriculture Offices",
-    "Development Partners",
+    {
+      name: "Cooperative Commission",
+      logo: "/partners/partner1.jpg",
+    },
+    {
+      name: "Amhara Region Government",
+      logo: "/partners/partner2.jpg",
+    },
+    {
+      name: "ATI Transforming Ethiopia",
+      logo: "/partners/partner3.jpg",
+    },
+    {
+      name: "Development Partners",
+      logo: "/partners/partner4.jpg",
+    },
+    {
+      name: "Financial Institutions",
+      logo: "/partners/partner5.png",
+    },
   ];
 
   return (
-    <section className="border-y border-zinc-200 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-6 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
-        <p className="font-medium text-zinc-700">Working with trusted partners</p>
-        <div className="flex flex-wrap gap-x-8 gap-y-3">
+    <section className="relative z-20 -mt-10 px-4 md:px-6">
+      <div className="mx-auto max-w-7xl rounded-2xl bg-white px-8 py-6 shadow-lg">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
           {partners.map((partner) => (
-            <span key={partner}>{partner}</span>
+            <div key={partner.name} className="flex items-center gap-3">
+              <div className="relative h-12 w-12">
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  fill
+                  sizes="48px"
+                  className="object-contain"
+                />
+              </div>
+
+              <p className="text-xs font-medium text-gray-700 md:text-sm">
+                {partner.name}
+              </p>
+            </div>
           ))}
         </div>
       </div>
