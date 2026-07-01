@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,20 +26,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
-=======
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    // 📌  suppressHydrationWarning to fix browser adds
-    <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>{children}</body>
->>>>>>> 1f01884b5cacc2b4eff8919ea0f0a8f453dab8ee
+      <body suppressHydrationWarning className="min-h-full flex flex-col">
+        {children}
+      </body>
     </html>
   );
 }
