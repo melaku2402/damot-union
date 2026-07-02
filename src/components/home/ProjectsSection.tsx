@@ -1,46 +1,101 @@
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+
 export default function ProjectsSection() {
   const projects = [
     {
-      title: "Market Linkage",
+      title: "Wheat Flour Factory",
+      capacity: "Capacity: 420 Quintals / Day",
       description:
-        "Connecting member cooperatives with better buyers, price information, and organized sales channels.",
+        "Modern flour processing plant serving the community with high quality products.",
+      progress: "85%",
+      image: "/projects/project1.jpg",
     },
     {
-      title: "Farmer Training",
+      title: "Corn Processing Plant",
+      capacity: "Capacity: 2,000 Quintals / Day",
       description:
-        "Hands-on support for productivity, post-harvest handling, and sustainable farm management.",
+        "Advanced corn processing facility for animal feed and human consumption.",
+      progress: "90%",
+      image: "/projects/project2.jpg",
     },
     {
-      title: "Input Access",
+      title: "Mechanization Center",
+      capacity: "12 Tractors • 2 Combines",
       description:
-        "Coordinating access to agricultural inputs and shared services when members need them most.",
+        "Providing mechanization services to increase productivity and efficiency.",
+      progress: "75%",
+      image: "/projects/project3.jpg",
     },
   ];
 
   return (
-    <section id="projects" className="bg-white">
-      <div className="mx-auto max-w-6xl px-6 py-20">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-            Projects
-          </p>
-          <h2 className="mt-3 text-3xl font-bold text-zinc-950 md:text-4xl">
-            Practical programs that improve farm livelihoods.
-          </h2>
+    <section className="bg-white py-16">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Heading */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
+          <div>
+            <p className="uppercase text-green-700 font-semibold tracking-wider mb-2">
+              Our Major Projects
+            </p>
+
+            <h2 className="text-4xl font-bold text-gray-900">
+              Investing in Our Future
+            </h2>
+          </div>
+
+          <button className="mt-4 md:mt-0 flex items-center gap-2 text-green-700 font-semibold">
+            View All Projects
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+
+        {/* Cards */}
+        <div className="grid lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <article
+            <div
               key={project.title}
-              className="rounded-lg border border-zinc-200 bg-zinc-50 p-6"
+              className="bg-white rounded-2xl shadow-md overflow-hidden border hover:shadow-xl transition"
             >
-              <h3 className="text-lg font-semibold text-zinc-950">
-                {project.title}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-zinc-600">
-                {project.description}
-              </p>
-            </article>
+              {/* Image */}
+              <div className="relative h-[220px]">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2 text-gray-900">
+                  {project.title}
+                </h3>
+
+                <p className="text-green-700 font-semibold text-sm mb-3">
+                  {project.capacity}
+                </p>
+
+                <p className="text-gray-600 text-sm leading-relaxed mb-5">
+                  {project.description}
+                </p>
+
+                {/* Progress */}
+                <div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-green-600 h-2 rounded-full"
+                      style={{ width: project.progress }}
+                    ></div>
+                  </div>
+
+                  <p className="text-sm text-gray-500 mt-2">
+                    {project.progress} Completed
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
